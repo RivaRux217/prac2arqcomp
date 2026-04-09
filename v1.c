@@ -5,8 +5,9 @@
 #include <string.h>
 #include "counter.h"
 
-#define N 1250
 #define CLS 64
+#define MAX_ITER 15000
+#define TOL 1e-5
 
 //Devolve un número aleatorio entre 0 e 10
 double aleatorio()
@@ -14,15 +15,21 @@ double aleatorio()
     return ((double)rand() / RAND_MAX) * 10;
 }
 
-int main()
+int main(int argc, char** argv)
 {
+    if(argc < 2)
+    {
+        perror("Insuficientes argumentos de entrada\n");
+        exit(EXIT_FAILURE);
+    }
+
+    const int N = atoi(argv[1]);
+
     srand(N); //Fijamos semilla de aleatoriedad
 
     double** a = (double**) aligned_alloc(CLS, N * sizeof(double*)); //Matriz de coeficientes
     double* b = (double*) aligned_alloc(CLS, N * sizeof(double)); //Vector de termos independientes
     double* x = (double*) aligned_alloc(CLS, N * sizeof(double)); //Vector solución
-    double tol = 1e-5; //Tolerancia para a converxencia
-    int max_iter = 15000; //Numero de iteracións
     double* x_new = (double*) aligned_alloc(CLS, N * sizeof(double)); //Nova solución
     double norm2;//norma del vector al cuadrado
 
@@ -61,7 +68,7 @@ int main()
     //Método de Jacobi
     start_counter();
 
-    for(int iter = 0; iter < max_iter; iter++)
+    for(int iter = 0; iter < MAX_ITER; iter++)
     {
         norm2 = 0;
         
@@ -81,9 +88,9 @@ int main()
             norm2 += pow((x_new[i] - x[i]), 2);
         }
 
-        memcpy(x, x_new, sizeof(x_new) * N); //x = x_new
+        memcpy(x, x_new, sizeof(double) * N); //x = x_new
 
-        if(sqrt(norm2) < tol)
+        if(sqrt(norm2) < TOL)
         {
             break;
         }

@@ -5,10 +5,11 @@
 #include <string.h>
 #include "counter.h"
 
-#define N 1250
 #define CLS 64
+#define MAX_ITER 15000
+#define TOL 1e-5
 
-//
+//Tamaño do bloque
 #define B_SIZE 32
 
 //Etiquetas
@@ -25,18 +26,29 @@ double aleatorio()
     return ((double)rand() / RAND_MAX) * 10;
 }
 
-int main()
+int main(int argc, char** argv)
 {
+    if(argc < 2)
+    {
+        perror("Insuficientes argumentos de entrada\n");
+        exit(EXIT_FAILURE);
+    }
+
+    const int N = atoi(argv[1]);
+
     srand(N); //Fijamos semilla de aleatoriedad
 
     double** a; //Matriz de coeficientes
     double* a_optm;  //Matriz de coeficientes optimizada
     double* b = (double*) aligned_alloc(CLS, N * sizeof(double)); //Vector de termos independientes
     double* x = (double*) aligned_alloc(CLS, N * sizeof(double)); //Vector solución
-    double tol = 1e-5; //Tolerancia para a converxencia
-    int max_iter = 15000; //Numero de iteracións
     double* x_new = (double*) aligned_alloc(CLS, N * sizeof(double)); //Nova solución
     double norm2;//norma del vector al cuadrado
+
+    opt[MENOS_INST]   = (argc > 3) ? atoi(argv[2]) : 0;
+    opt[DIV_LAZOS]    = (argc > 4) ? atoi(argv[3]) : 0;
+    opt[DES_LAZOS]    = (argc > 5) ? atoi(argv[4]) : 0;
+    opt[OPER_BLOQUES] = (argc > 6) ? atoi(argv[5]) : 0;
 
     //Reservamos memoria para as filas da matriz
     if(opt[MENOS_INST])
@@ -71,11 +83,11 @@ int main()
                     a_optm[i * N + j+2] = aleatorio();
                     a_optm[i * N + j+3] = aleatorio();
                     a_optm[i * N + j+4] = aleatorio();
-                    a_optm[i+1 * N + j] = aleatorio();
-                    a_optm[i+1 * N + j+1] = aleatorio();
-                    a_optm[i+1 * N + j+2] = aleatorio();
-                    a_optm[i+1 * N + j+3] = aleatorio();
-                    a_optm[i+1 * N + j+4] = aleatorio();
+                    a_optm[(i+1) * N + j] = aleatorio();
+                    a_optm[(i+1) * N + j+1] = aleatorio();
+                    a_optm[(i+1) * N + j+2] = aleatorio();
+                    a_optm[(i+1) * N + j+3] = aleatorio();
+                    a_optm[(i+1) * N + j+4] = aleatorio();
                 }
                 else
                 {
@@ -175,7 +187,7 @@ int main()
     //Método de Jacobi
     start_counter();
 
-    for(int iter = 0; iter < max_iter; iter++)
+    for(int iter = 0; iter < MAX_ITER; iter++)
     {
         norm2 = 0;
         
@@ -233,11 +245,11 @@ int main()
             memcpy(x, x_new, sizeof(double) * N); //x = x_new
         }
 
-        if(!opt[MENOS_INST] && sqrt(norm2) < tol)
+        if(!opt[MENOS_INST] && sqrt(norm2) < TOL)
         {
             break;
         }
-        else if(norm2 < tol * tol)
+        else if(norm2 < TOL * TOL)
         {
             break;
         }
