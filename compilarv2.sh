@@ -17,7 +17,7 @@ do
     for i in {1..10}
     do
         echo -e "\n\tEXPERIMENTO $i\n"
-        ./v1 N 1
+        ./v1 $N 1
     done
 done
 
@@ -28,7 +28,7 @@ do
     for i in {1..10}
     do
         echo -e "\n\tEXPERIMENTO $i\n"
-        ./v1 N 0 1
+        ./v1 $N 0 1
     done
 done
 
@@ -39,7 +39,7 @@ do
     for i in {1..10}
     do
         echo -e "\n\tEXPERIMENTO $i\n"
-        ./v1 N 0 0 1
+        ./v1 $N 0 0 1
     done
 done
 
@@ -50,7 +50,7 @@ do
     for i in {1..10}
     do
         echo -e "\n\tEXPERIMENTO $i\n"
-        ./v1 N 0 0 0 1
+        ./v1 $N 0 0 0 1
     done
 done
 
@@ -61,7 +61,7 @@ do
     for i in {1..10}
     do
         echo -e "\n\tEXPERIMENTO $i\n"
-        ./v1 N 1 1
+        ./v1 $N 1 1
     done
 done
 
@@ -72,7 +72,7 @@ do
     for i in {1..10}
     do
         echo -e "\n\tEXPERIMENTO $i\n"
-        ./v1 N 1 0 1
+        ./v1 $N 1 0 1
     done
 done
 
@@ -83,7 +83,7 @@ do
     for i in {1..10}
     do
         echo -e "\n\tEXPERIMENTO $i\n"
-        ./v1 N 1 0 0 1
+        ./v1 $N 1 0 0 1
     done
 done
 
@@ -94,7 +94,7 @@ do
     for i in {1..10}
     do
         echo -e "\n\tEXPERIMENTO $i\n"
-        ./v1 N 1 0 1 1
+        ./v1 $N 1 0 1 1
     done
 done
 
@@ -105,7 +105,7 @@ do
     for i in {1..10}
     do
         echo -e "\n\tEXPERIMENTO $i\n"
-        ./v1 N 0 0 1 1
+        ./v1 $N 0 0 1 1
     done
 done
 
