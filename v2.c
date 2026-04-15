@@ -130,32 +130,41 @@ int main(int argc, char** argv)
     //Aseguramos que a matriz sea diagonal dominante
     if(opt[DES_LAZOS])
     {
-        for(int i = 0; i < N; i += 2)
+        for(int i = 0; i < N; i++)
         {
             double suma = 0;
             
             for(int j = 0; j < N; j += 2)
             {
+                /*
                 suma += (!opt[MENOS_INST]) ? a[i][j] : a_optm[i * N + j];
                 suma += (!opt[MENOS_INST]) ? a[i][j+1] : a_optm[i * N + (j+1)];
                 suma += (!opt[MENOS_INST]) ? a[i + 1][j] : a_optm[(i+1) * N + j];
                 suma += (!opt[MENOS_INST]) ? a[i + 1][j + 1] : a_optm[(i+1) * N + (j+1)];
+                */
+                suma += (opt[MENOS_INST]) ? a_optm[i * N + j] : a[i][j];
+                suma += (opt[MENOS_INST]) ? a_optm[i * N + j + 1] : a[i][j + 1];
             }
 
             if(opt[MENOS_INST])
             {
+                /*
                 a_optm[i * N + i] += suma;
-                a_optm[i * N + (i+1)] += suma;
-                a_optm[(i+1) * N + i] += suma;
+                //a_optm[i * N + (i+1)] += suma;
+                //a_optm[(i+1) * N + i] += suma;
                 a_optm[(i+1) * N + (i+1)] += suma;
-
+                */
+               a_optm[i * N + i] += suma;
             }
             else
             {
+                /*
                 a[i][i] += suma;
-                a[i][i+1] += suma;
-                a[i+1][i] += suma;
+                //a[i][i+1] += suma;
+                //a[i+1][i] += suma;
                 a[i+1][i+1] += suma;
+                */
+               a[i][i] += suma;
             }  
         }
     }
@@ -209,7 +218,7 @@ int main(int argc, char** argv)
                 }
 
             }
-            if(opt[DIV_LAZOS]){
+            else if(opt[DIV_LAZOS]){
                 for(int j = 0; j < i; j++)
                 {
                     sigma += (opt[MENOS_INST]) ? a_optm[i * N + j] * x[j] : a[i][j] * x[j];
