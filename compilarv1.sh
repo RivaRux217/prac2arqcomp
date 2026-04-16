@@ -5,6 +5,8 @@
 # Ponemos nombre a nuestro trabajo para poder identificarlo.
 # ATENCIÓN - Debes sustituir el NN por el número de equipo.
 #SBATCH --job-name p1acg1013
+#SBATCH -o RES_v1.txt
+#SBATCH -e ERR_v1.txt
 
 # Sustituir los valores de Di y Li por los calculados para la realización de la práctica.
 
