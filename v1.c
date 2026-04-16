@@ -45,25 +45,19 @@ int main(int argc, char** argv)
         b[i] = aleatorio(); //Poñemos valores aleatorios en B
         x[i] = 0;
         x_new[i] = 0;
-
+        double suma = 0;
+        
         for(int j = 0; j < N; j++)
         {
             a[i][j] = aleatorio();
         }
+
+        suma += 6000 * N;
+
+        a[i][i] += suma;  //Aseguramos que a matriz sea diagonal dominante
+
     }
 
-    //Aseguramos que a matriz sea diagonal dominante
-    for(int i = 0; i < N; i++)
-    {
-        double suma = 0;
-
-        for(int j = 0; j < N; j++)
-        {
-            suma += a[i][j];
-        }
-
-        a[i][i] += suma;
-    }
 
     //Método de Jacobi
     start_counter();
