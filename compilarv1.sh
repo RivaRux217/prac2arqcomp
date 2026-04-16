@@ -10,13 +10,13 @@
 
 gcc v1.c -o v1 -O0 -lm
 
-for N in {1250, 2000, 3200}
+for N in {1250,2000,3200}
 do
     echo -e "\nVALOR DE N $N\n"
     for i in {1..10}
     do
         echo -e "\n\tEXPERIMENTO $i\n"
-        ./v1 N
+        ./v1 $N
     done
 done
 
