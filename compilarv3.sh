@@ -18,7 +18,10 @@ do
         do
             for CRIT in {0..2}
             do
-                ./v3 $N $TH $SC $CRIT
+                for i in {1..10}
+                do
+                    ./v3 $N $TH $SC $CRIT
+                done
             done
         done
     done
