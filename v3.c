@@ -41,10 +41,10 @@ int main(int argc, char** argv)
      *         1: usa critical
      *         >1: usa atomic
      */
-    const int N  = (argc == 2) ? atoi(argv[1]) : 1200;
-    const int TH = (argc == 3) ? atoi(argv[2]) : 1;
-    const int SC = (argc == 4) ? atoi(argv[3]) : 0;
-    const int CRIT = argc == 5; //Por defecto usamos reduction
+    const int N    = (argc == 2) ? atoi(argv[1]) : 120;
+    const int TH   = (argc == 3) ? atoi(argv[2]) : 1;
+    const int SC   = (argc == 4) ? atoi(argv[3]) : 0;
+    const int CRIT = (argc == 5) ? atoi(argv[4]) : 0; //Por defecto usamos reduction
 
     int critIx = (CRIT == 0) ? 0 : ((CRIT == 1) ? 1 : 2);
 
@@ -110,19 +110,20 @@ int main(int argc, char** argv)
     //Método de Jacobi
     start_counter();
     
-    #pragma omp parallel num_threads(TH)
+    
+    for(int iter = 0; iter < MAX_ITER; iter++)
     {
-        for(int iter = 0; iter < MAX_ITER; iter++)
-        {
-            norm2 = 0;
+        norm2 = 0;
             
-            /**
-             * Paralelizamos bucle interno
-             * schedule(runtime) -> Deseamos introducir por comandos el tipo de schedule a usar
-             * reduction(+ : norm2) -> Privatizamos la variable norm2, haciendo que cada hilo calcule una parte y se sumen todas
-             *                         al final.
-             * critical: para pruebas, sólo 1 hilo a la vez trabaja en la región definida con critical. No es lo más eficiente
-             */
+        /**
+         * Paralelizamos bucle interno
+         * schedule(runtime) -> Deseamos introducir por comandos el tipo de schedule a usar
+         * reduction(+ : norm2) -> Privatizamos la variable norm2, haciendo que cada hilo calcule una parte y se sumen todas
+         *                         al final.
+         * critical: para pruebas, sólo 1 hilo a la vez trabaja en la región definida con critical. No es lo más eficiente
+         */
+        #pragma omp parallel num_threads(TH)
+        {
             if(CRIT)
             {
                 #pragma omp for schedule(runtime)
@@ -179,15 +180,14 @@ int main(int argc, char** argv)
                     norm2 += pow((x_new[i] - x[i]), 2);
                 }
             }
-
-            memcpy(x, x_new, sizeof(double) * N); //x = x_new
-
-            if(sqrt(norm2) < TOL)
-            {
-                break;
-            }
         }
 
+        memcpy(x, x_new, sizeof(double) * N); //x = x_new
+
+        if(sqrt(norm2) < TOL)
+        {
+            break;
+        }
     }
 
 
