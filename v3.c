@@ -53,17 +53,11 @@ int main(int argc, char** argv)
 
     srand(N); //Fijamos semilla de aleatoriedad
 
-    double** a = (double**) aligned_alloc(CLS, N * sizeof(double*)); //Matriz de coeficientes
+    double* a = (double*) aligned_alloc(CLS, N * N * sizeof(double)); //Matriz de coeficientes
     double* b = (double*) aligned_alloc(CLS, N * sizeof(double)); //Vector de termos independientes
     double* x = (double*) aligned_alloc(CLS, N * sizeof(double)); //Vector solución
     double* x_new = (double*) aligned_alloc(CLS, N * sizeof(double)); //Nova solución
     double norm2;//norma del vector al cuadrado
-
-    //Reservamos memoria para as filas da matriz
-    for(int i = 0; i < N; i++)
-    {
-        a[i] = (double*) aligned_alloc(CLS, N * sizeof(double));
-    }
 
     //Inicializamos matrices e vectores
     for(int i = 0; i < N; i++)
@@ -75,12 +69,12 @@ int main(int argc, char** argv)
         
         for(int j = 0; j < N; j++)
         {
-            a[i][j] = aleatorio();
+            a[i * N + j] = aleatorio();
         }
 
         suma += 6000 * N;
 
-        a[i][i] += suma;  //Aseguramos que a matriz sea diagonal dominante
+        a[i * N + i] += suma;  //Aseguramos que a matriz sea diagonal dominante
 
     }
 
@@ -134,14 +128,14 @@ int main(int argc, char** argv)
                     //División de lazos
                     for(int j = 0; j < i; j++)
                     {
-                        sigma += a[i][j] * x[j];
+                        sigma += a[i * N + j] * x[j];
                     }
                     for(int j = i+1; j < N; j++)
                     {
-                        sigma += a[i][j] * x[j];
+                        sigma += a[i * N + j] * x[j];
                     }
 
-                    x_new[i] = (b[i] - sigma) / a[i][i];
+                    x_new[i] = (b[i] - sigma) / a[i * N + i];
 
                     if(CRIT > 1)
                     {
@@ -168,14 +162,14 @@ int main(int argc, char** argv)
                     //División de lazos
                     for(int j = 0; j < i; j++)
                     {
-                        sigma += a[i][j] * x[j];
+                        sigma += a[i * N + j] * x[j];
                     }
                     for(int j = i+1; j < N; j++)
                     {
-                        sigma += a[i][j] * x[j];
+                        sigma += a[i * N + j] * x[j];
                     }
 
-                    x_new[i] = (b[i] - sigma) / a[i][i];
+                    x_new[i] = (b[i] - sigma) / a[i * N + i];
 
                     norm2 += pow((x_new[i] - x[i]), 2);
                 }
