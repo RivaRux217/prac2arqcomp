@@ -176,9 +176,12 @@ int main(int argc, char** argv)
             }
         }
 
-        memcpy(x, x_new, sizeof(double) * N); //x = x_new
-
-        if(sqrt(norm2) < TOL)
+        //x = x_new
+        double* tmp = x;
+        x = x_new;
+        x_new = tmp;
+        
+        if(norm2 < TOL * TOL)
         {
             break;
         }
