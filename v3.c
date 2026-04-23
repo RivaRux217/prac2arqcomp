@@ -140,13 +140,13 @@ int main(int argc, char** argv)
                     if(CRIT > 1)
                     {
                         #pragma omp atomic
-                        norm2 += pow((x_new[i] - x[i]), 2);
+                        norm2 += (x_new[i] - x[i]) * (x_new[i] - x[i]);
                     }
                     else
                     {
                         #pragma omp critical
                         {
-                            norm2 += pow((x_new[i] - x[i]), 2);
+                            norm2 += (x_new[i] - x[i]) * (x_new[i] - x[i]);
                         }
                     }
 
@@ -171,7 +171,7 @@ int main(int argc, char** argv)
 
                     x_new[i] = (b[i] - sigma) / a[i * N + i];
 
-                    norm2 += pow((x_new[i] - x[i]), 2);
+                    norm2 += (x_new[i] - x[i]) * (x_new[i] - x[i]);
                 }
             }
         }
