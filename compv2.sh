@@ -10,7 +10,7 @@
 
 # Sustituir los valores de Di y Li por los calculados para la realización de la práctica.
 
-gcc v21.c -o v21 -O3 -lm
+gcc v21.c -o v21 -O0 -lm
 
 echo -e "1,0,0,0\n"
 
