@@ -112,5 +112,28 @@ do
     done
 done
 
+echo -e "\n1,1,1,0\n"
 
+for N in 1250 2000 3200
+do
+    echo -e "\nVALOR DE N $N\n"
+    for i in {1..10}
+    do
+        echo -e "\n\tEXPERIMENTO $i\n"
+        ./v2 $N 1 1 1 0
+    done
+done
+
+
+echo -e "\n0,1,1,0\n"
+
+for N in 1250 2000 3200
+do
+    echo -e "\nVALOR DE N $N\n"
+    for i in {1..10}
+    do
+        echo -e "\n\tEXPERIMENTO $i\n"
+        ./v2 $N 0 1 1 0
+    done
+done
 
