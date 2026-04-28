@@ -46,10 +46,10 @@ int main(int argc, char** argv)
     double* x_new = (double*) aligned_alloc(CLS, N * sizeof(double)); //Nova solución
     double norm2;//norma del vector al cuadrado
 
-    opt[MENOS_INST]   = (argc > 3) ? atoi(argv[2]) : 0;
-    opt[DIV_LAZOS]    = (argc > 4) ? atoi(argv[3]) : 0;
-    opt[DES_LAZOS]    = (argc > 5) ? atoi(argv[4]) : 0;
-    opt[OPER_BLOQUES] = (argc > 6) ? atoi(argv[5]) : 0;
+    opt[MENOS_INST]   = (argc > 2) ? atoi(argv[2]) : 0;
+    opt[DIV_LAZOS]    = (argc > 3) ? atoi(argv[3]) : 0;
+    opt[DES_LAZOS]    = (argc > 4) ? atoi(argv[4]) : 0;
+    opt[OPER_BLOQUES] = (argc > 5) ? atoi(argv[5]) : 0;
 
     //Reservamos memoria para as filas da matriz
     if(opt[MENOS_INST])
@@ -66,97 +66,13 @@ int main(int argc, char** argv)
         }
     }
 
-
-    if(opt[DES_LAZOS])
-    {
-        for(int i = 0; i < N; i+=2)
-        {
-            b[i] = aleatorio(); //Poñemos valores aleatorios en B
-            x[i] = 0;
-            x_new[i] = 0;
-
-            for(int j = 0; j < N; j+=5)
-            {
-                if(opt[MENOS_INST])
-                {
-                    a_optm[i * N + j] = aleatorio();
-                    a_optm[i * N + j+1] = aleatorio();
-                    a_optm[i * N + j+2] = aleatorio();
-                    a_optm[i * N + j+3] = aleatorio();
-                    a_optm[i * N + j+4] = aleatorio();
-                    a_optm[(i+1) * N + j] = aleatorio();
-                    a_optm[(i+1) * N + j+1] = aleatorio();
-                    a_optm[(i+1) * N + j+2] = aleatorio();
-                    a_optm[(i+1) * N + j+3] = aleatorio();
-                    a_optm[(i+1) * N + j+4] = aleatorio();
-                }
-                else
-                {
-                    a[i][j] = aleatorio();
-                    a[i][j+1] = aleatorio();
-                    a[i][j+2] = aleatorio();
-                    a[i][j+3] = aleatorio();
-                    a[i][j+4] = aleatorio();
-                    a[i+1][j] = aleatorio();
-                    a[i+1][j+1] = aleatorio();
-                    a[i+1][j+2] = aleatorio();
-                    a[i+1][j+3] = aleatorio();
-                    a[i+1][j+4] = aleatorio();
-                }
-            }
-        }
-    }else
-    {
-        //Inicializamos matrices e vectores
-        for(int i = 0; i < N; i++)
-        {
-            b[i] = aleatorio(); //Poñemos valores aleatorios en B
-            x[i] = 0;
-            x_new[i] = 0;
-
-            for(int j = 0; j < N; j++)
-            {
-                if(opt[MENOS_INST])
-                {
-                    a_optm[i * N + j] = aleatorio();
-                }
-                else
-                {
-                    a[i][j] = aleatorio();
-                }
-            }
-        }
-    }
-
     //Aseguramos que a matriz sea diagonal dominante
-    if(opt[DES_LAZOS])
+    for(int i = 0; i < N; i++)
     {
-        for(int i = 0; i < N; i++)
-        {
-            if(opt[MENOS_INST])
-            {
-               a_optm[i * N + i] += suma;
-            }
-            else
-            {
-               a[i][i] += suma;
-            }  
-        }
-    }
-    else
-    {
-        for(int i = 0; i < N; i++)
-        {
-
-            if(opt[MENOS_INST])
-            {
-                a_optm[i * N + i] += suma;
-            }
-            else
-            {
-                a[i][i] += suma;
-            }  
-        }
+        if(opt[MENOS_INST])
+            a_optm[i * N + i] += suma;
+        else
+            a[i][i] += suma;
     }
 
     //Método de Jacobi
@@ -165,48 +81,240 @@ int main(int argc, char** argv)
     for(int iter = 0; iter < MAX_ITER; iter++)
     {
         norm2 = 0;
-        
-        for(int i = 0; i < N; i++)
+
+        //OPERACION POR BLOQUES
+        if(opt[OPER_BLOQUES])
         {
-            double sigma = 0.0;
-            if(opt[OPER_BLOQUES]){
-                
-                for(int bj = 0; bj < N; bj += B_SIZE){  //va de bloque en bloque
-                    //para controlar el num de iteraciones que se hace dentro de cada bloque
-                    int fin = (bj + B_SIZE < N) ? bj + B_SIZE : N;  //como N no tiene pq ser divisible por B_SIZE, cuando esté  
-                    //en el último bloque probablemente se pase con el paso del bloque asiq aseguramos que solo vaya hasta N
-                    
-                    for(int j = bj; j < fin; j++){ //en cada bloque 
-                        if(i != j){
-                            sigma += (opt[MENOS_INST]) ? a_optm[i * N + j] * x[j] : a[i][j] * x[j];
+            if(opt[MENOS_INST])
+            {
+                for(int i = 0; i < N; i++)
+                {
+                    double sigma = 0.0;
+
+                    for(int bj = 0; bj < N; bj += B_SIZE)  //va de bloque en bloque
+                    {
+                        int fin = (bj + B_SIZE < N) ? bj + B_SIZE : N;  //para controlar el num de iteraciones que se hace dentro de cada bloque
+
+                        for(int j = bj; j < fin; j++) //en cada bloque 
+                        {
+                            if(i != j)
+                                sigma += a_optm[i * N + j] * x[j];
                         }
                     }
-                }
 
+                    x_new[i] = (b[i] - sigma) / a_optm[i * N + i];
+                    norm2 += (x_new[i] - x[i]) * (x_new[i] - x[i]);
+                }
             }
-            else if(opt[DIV_LAZOS]){
-                for(int j = 0; j < i; j++)
+            else
+            {
+                for(int i = 0; i < N; i++)
                 {
-                    sigma += (opt[MENOS_INST]) ? a_optm[i * N + j] * x[j] : a[i][j] * x[j];
-                }
-                for(int j = i+1; j < N; j++)
-                {
-                    sigma += (opt[MENOS_INST]) ? a_optm[i * N + j] * x[j] : a[i][j] * x[j];
-                }
+                    double sigma = 0.0;
 
-            }else{
-                
-                for(int j = 0; j < N; j++)
-                {
-                    if(i != j)
+                    for(int bj = 0; bj < N; bj += B_SIZE)
                     {
-                        sigma += (opt[MENOS_INST]) ? a_optm[i * N + j] * x[j] : a[i][j] * x[j];
+                        int fin = (bj + B_SIZE < N) ? bj + B_SIZE : N;
+
+                        for(int j = bj; j < fin; j++)
+                        {
+                            if(i != j)
+                                sigma += a[i][j] * x[j];
+                        }
                     }
+
+                    x_new[i] = (b[i] - sigma) / a[i][i];
+                    norm2 += pow((x_new[i] - x[i]), 2);
                 }
             }
-            
-            x_new[i] = (b[i] - sigma) / ((opt[MENOS_INST]) ? a_optm[i * N + i] : a[i][i]);
-            norm2 += (!opt[MENOS_INST]) ? pow((x_new[i] - x[i]), 2) : (x_new[i] - x[i]) * (x_new[i] - x[i]);
+        }
+        else if(opt[DIV_LAZOS] && opt[DES_LAZOS])
+        {
+            if(opt[MENOS_INST])
+            {
+                for(int i = 0; i < N; i++)
+                {
+                    double sigma = 0.0;
+                    int j;
+
+                    //Primera sección (j<i)
+                    for(j = 0; j < i - 4; j+= 4){
+                        sigma += a_optm[i * N + j] * x[j];
+                        sigma += a_optm[i * N + j + 1] * x[j + 1];
+                        sigma += a_optm[i * N + j + 2] * x[j + 2];
+                        sigma += a_optm[i * N + j + 3] * x[j + 3];
+                    }
+                    for (; j < i; j++) { //por si i no es múlrtiplo de 4
+                        sigma += a_optm[i * N + j] * x[j];
+                    }
+
+                    //Segundaa sección (j>i), así nos saltamos el j=i
+                    for (j = i + 1; j <= N - 4; j += 4) {
+                        sigma += a_optm[i * N + j] * x[j];
+                        sigma += a_optm[i * N + j + 1] * x[j + 1];
+                        sigma += a_optm[i * N + j + 2] * x[j + 2];
+                        sigma += a_optm[i * N + j + 3] * x[j + 3];
+                    }
+                    for (; j < N; j++) { //por si N no es múltiplo de 4
+                        sigma += a_optm[i * N + j] * x[j];
+                    }
+
+                    x_new[i] = (b[i] - sigma) / a_optm[i * N + i];
+                    norm2 += (x_new[i] - x[i]) * (x_new[i] - x[i]);
+                }
+            }
+            else
+            {
+                for(int i = 0; i < N; i++)
+                {
+                    double sigma = 0.0;
+                    int j;
+
+                    //Primera sección (j<i)
+                    for(j = 0; j < i - 4; j += 4){
+                        sigma += a[i][j] * x[j];
+                        sigma += a[i][j + 1] * x[j + 1];
+                        sigma += a[i][j + 2] * x[j + 2];
+                        sigma += a[i][j + 3] * x[j + 3];
+                    }
+
+                    for (; j < i; j++) { //por si i no es múlrtiplo de 4
+                        sigma += a[i][j] * x[j];
+                    }
+
+                    //Segundaa sección (j>i), así nos saltamos el j=i
+                    for (j = i + 1; j <= N - 4; j += 4) {
+                        sigma += a[i][j] * x[j];
+                        sigma += a[i][j + 1] * x[j + 1];
+                        sigma += a[i][j + 2] * x[j + 2];
+                        sigma += a[i][j + 3] * x[j + 3];
+                    }
+                    for (; j < N; j++) { //por si N no es múltiplo de 4
+                        sigma += a[i][j] * x[j];
+                    }
+
+                    x_new[i] = (b[i] - sigma) / a[i][i];
+                    norm2 += pow((x_new[i] - x[i]), 2);
+                }
+            }
+        }
+        //DESENRROLLAMIENTO DE LAZOS
+        else if(opt[DES_LAZOS])
+        {
+            if(opt[MENOS_INST])
+            {
+                for(int i = 0; i < N; i++)
+                {
+                    double sigma = 0.0;
+                    int j;
+
+                    for(j = 0; j < N-4; j+=4){
+                        if(i != j)  sigma += a_optm[i * N + j] * x[j];
+                        if(i != (j+1))  sigma += a_optm[i * N + j + 1] * x[j + 1];
+                        if(i != (j+2))  sigma += a_optm[i * N + j + 2] * x[j + 2];
+                        if(i != (j+3))  sigma += a_optm[i * N + j + 3] * x[j + 3];               
+                    }
+
+                    for(; j < N; j++){
+                        if(i != j)   sigma += a_optm[i * N + j] * x[j];
+                    }
+
+                    x_new[i] = (b[i] - sigma) / a_optm[i * N + i];
+                    norm2 += (x_new[i] - x[i]) * (x_new[i] - x[i]);
+                }
+            }
+            else
+            {
+                for(int i = 0; i < N; i++)
+                {
+                    double sigma = 0.0;
+                    int j;
+
+
+                    for(j = 0; j < N-4; j+=4){
+                        if(i != j)  sigma += a[i][j] * x[j];
+                        if(i != (j+1))  sigma += a[i][j + 1] * x[j + 1];
+                        if(i != (j+2))  sigma += a[i][j + 2] * x[j + 2];
+                        if(i != (j+3))  sigma += a[i][j + 3] * x[j + 3];              
+                    }
+
+                    for(; j < N; j++){
+                        if(i != j)  sigma += a[i][j] * x[j];
+                    }
+
+                    x_new[i] = (b[i] - sigma) / a[i][i];
+                    norm2 += pow((x_new[i] - x[i]), 2);
+                }
+            }
+
+        }
+
+        //DIVISION DE LAZOS
+        else if(opt[DIV_LAZOS])
+        {
+            if(opt[MENOS_INST])
+            {
+                for(int i = 0; i < N; i++)
+                {
+                    double sigma = 0.0;
+
+                    for(int j = 0; j < i; j++)
+                        sigma += a_optm[i * N + j] * x[j];
+
+                    for(int j = i+1; j < N; j++)
+                        sigma += a_optm[i * N + j] * x[j];
+
+                    x_new[i] = (b[i] - sigma) / a_optm[i * N + i];
+                    norm2 += (x_new[i] - x[i]) * (x_new[i] - x[i]);
+                }
+            }
+            else
+            {
+                for(int i = 0; i < N; i++)
+                {
+                    double sigma = 0.0;
+
+                    for(int j = 0; j < i; j++)
+                        sigma += a[i][j] * x[j];
+
+                    for(int j = i+1; j < N; j++)
+                        sigma += a[i][j] * x[j];
+
+                    x_new[i] = (b[i] - sigma) / a[i][i];
+                    norm2 += pow((x_new[i] - x[i]), 2);
+                }
+            }
+        }
+        else
+        {
+            if(opt[MENOS_INST])
+            {
+                for(int i = 0; i < N; i++)
+                {
+                    double sigma = 0.0;
+
+                    for(int j = 0; j < N; j++)
+                        if(i != j)
+                            sigma += a_optm[i * N + j] * x[j];
+
+                    x_new[i] = (b[i] - sigma) / a_optm[i * N + i];
+                    norm2 += (x_new[i] - x[i]) * (x_new[i] - x[i]);
+                }
+            }
+            else
+            {
+                for(int i = 0; i < N; i++)
+                {
+                    double sigma = 0.0;
+
+                    for(int j = 0; j < N; j++)
+                        if(i != j)
+                            sigma += a[i][j] * x[j];
+
+                    x_new[i] = (b[i] - sigma) / a[i][i];
+                    norm2 += pow((x_new[i] - x[i]), 2);
+                }
+            }
         }
 
         if(opt[MENOS_INST])
@@ -220,14 +328,11 @@ int main(int argc, char** argv)
             memcpy(x, x_new, sizeof(double) * N); //x = x_new
         }
 
+        //Criterio de parada
         if(!opt[MENOS_INST] && sqrt(norm2) < TOL)
-        {
             break;
-        }
         else if(norm2 < TOL * TOL)
-        {
             break;
-        }
     }
 
     double tiempo = get_counter(); //Obtemos ciclos de reloj
@@ -236,4 +341,3 @@ int main(int argc, char** argv)
 
     return 0;
 }
-
