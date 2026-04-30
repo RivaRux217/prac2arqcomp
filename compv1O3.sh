@@ -10,7 +10,7 @@
 
 # Sustituir los valores de Di y Li por los calculados para la realización de la práctica.
 
-gcc v1.c -o v1 -O0 -lm
+gcc v1.c -o v1 -O3 -lm
 
 for N in {1250,2000,3200}
 do
