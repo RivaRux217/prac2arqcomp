@@ -6,7 +6,7 @@
 #include <immintrin.h>
 #include "counter.h"
 
-#define CLS 32 //Aquí alineamos a 32, necesario para AVX
+#define CLS 64 //Aquí alineamos a 32, necesario para AVX
 #define DBL 4 //Número de doubles que podemos tratar cunha sola instrucción AVX
 #define MAX_ITER 15000
 #define TOL 1e-5
@@ -69,14 +69,44 @@ int main(int argc, char** argv)
             double sigma = 0.0;
             __m256d vTemp = _mm256_setzero_pd(); //Seteamos registro de guardado temporal de sumas a 0
 
-            //Eliminamos la división de lazos, pues hace más ineficiente el programa al usar AVX
-            for(int j = 0; j < limit; j += 4)
+            /**
+             * DESENROLLO DE LAZOS
+             * Con instrucciones escalares y desenrollo de lazos realizamos 4 iteraciones en una
+             * Con instrucciones vectoriales sin desenrollo de lazos operamos 4 valores en una instrucción
+             * Con AVX + desenrollo de lazos realizamos 4 sumas vectoriales de 4 doubles cada una
+             * Entonces, j avanza de 16 en 16 para realizar las 4 operaciones en 1
+             */
+            for(int j = 0; j < limit; j += 16)
             {
+                __m256d vA, vX;
+                int coef = 0; //Valor sumado a j para el desenrollo de lazos
 
-                __m256d vA = _mm256_load_pd(a + (i * nFila + j)); //Guardamos 4 posiciones de a en registro vectorial
-                __m256d vX = _mm256_load_pd(x + j); //Guardamos 4 posiciones de x en registro vectorial
+                /* Iteración 1 */
+                vA = _mm256_load_pd(a + (i * nFila + j)); //Guardamos 4 posiciones de a en registro vectorial
+                vX = _mm256_load_pd(x + j); //Guardamos 4 posiciones de x en registro vectorial
 
                 //Realizamos la multiplicación vectorial y la sumamos a los resultados guardados en vTemp
+                vTemp = _mm256_add_pd(vTemp, _mm256_mul_pd(vA, vX)); 
+
+                /* Iteración 2 */
+                coef += 4;
+                vA = _mm256_load_pd(a + (i * nFila + j + coef));
+                vX = _mm256_load_pd(x + j + coef);
+
+                vTemp = _mm256_add_pd(vTemp, _mm256_mul_pd(vA, vX)); 
+
+                /* Iteración 3 */
+                coef += 4;
+                vA = _mm256_load_pd(a + (i * nFila + j + coef));
+                vX = _mm256_load_pd(x + j + coef);
+
+                vTemp = _mm256_add_pd(vTemp, _mm256_mul_pd(vA, vX)); 
+
+                /* Iteración 4 */
+                coef += 4;
+                vA = _mm256_load_pd(a + (i * nFila + j + coef));
+                vX = _mm256_load_pd(x + j + coef);
+
                 vTemp = _mm256_add_pd(vTemp, _mm256_mul_pd(vA, vX)); 
             }
 

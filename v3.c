@@ -176,6 +176,8 @@ int main(int argc, char** argv)
                     }
 
                     x_new[i] = (b[i] - sigma) / a[i * N + i];
+
+                    norm2 += (x_new[i] - x[i]) * (x_new[i] - x[i]);
                 }
             }
         }
@@ -198,4 +200,3 @@ int main(int argc, char** argv)
 
     return 0;
 }
-
