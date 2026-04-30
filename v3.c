@@ -124,15 +124,18 @@ int main(int argc, char** argv)
                 for(int i = 0; i < N; i++)
                 {
                     double sigma = 0.0;
-                    
-                    //División de lazos
-                    for(int j = 0; j < i; j++)
-                    {
-                        sigma += a[i * N + j] * x[j];
+                    int j;
+
+                    //Desenrollamiento de lazos
+                    for(j = 0; j < N-4; j+=4){
+                        if(i != j)  sigma += a[i * N + j] * x[j];
+                        if(i != (j+1))  sigma += a[i * N + j + 1] * x[j + 1];
+                        if(i != (j+2))  sigma += a[i * N + j + 2] * x[j + 2];
+                        if(i != (j+3))  sigma += a[i * N + j + 3] * x[j + 3];               
                     }
-                    for(int j = i+1; j < N; j++)
-                    {
-                        sigma += a[i * N + j] * x[j];
+
+                    for(; j < N; j++){
+                        if(i != j)   sigma += a[i * N + j] * x[j];
                     }
 
                     x_new[i] = (b[i] - sigma) / a[i * N + i];
@@ -158,20 +161,21 @@ int main(int argc, char** argv)
                 for(int i = 0; i < N; i++)
                 {
                     double sigma = 0.0;
-                    
-                    //División de lazos
-                    for(int j = 0; j < i; j++)
-                    {
-                        sigma += a[i * N + j] * x[j];
+                    int j;
+
+                    //Desenrollamiento de lazos
+                    for(j = 0; j < N-4; j+=4){
+                        if(i != j)  sigma += a[i * N + j] * x[j];
+                        if(i != (j+1))  sigma += a[i * N + j + 1] * x[j + 1];
+                        if(i != (j+2))  sigma += a[i * N + j + 2] * x[j + 2];
+                        if(i != (j+3))  sigma += a[i * N + j + 3] * x[j + 3];               
                     }
-                    for(int j = i+1; j < N; j++)
-                    {
-                        sigma += a[i * N + j] * x[j];
+
+                    for(; j < N; j++){
+                        if(i != j)   sigma += a[i * N + j] * x[j];
                     }
 
                     x_new[i] = (b[i] - sigma) / a[i * N + i];
-
-                    norm2 += (x_new[i] - x[i]) * (x_new[i] - x[i]);
                 }
             }
         }
