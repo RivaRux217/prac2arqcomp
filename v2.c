@@ -66,6 +66,31 @@ int main(int argc, char** argv)
         }
     }
 
+    //Inicialización
+    for(int i = 0; i < N; i++)
+    {
+        b[i] = aleatorio();
+        x[i] = 0.0;  
+        x_new[i] = 0.0;
+
+        for(int j = 0; j < N; j++)
+        {
+            if(opt[MENOS_INST])
+                a_optm[i * N + j] = aleatorio();
+            else
+                a[i][j] = aleatorio();
+        }
+    }
+
+    // Aseguramos que la matriz sea diagonal dominante (Esto ya lo tenías bien)
+    for(int i = 0; i < N; i++)
+    {
+        if(opt[MENOS_INST])
+            a_optm[i * N + i] += suma;
+        else
+            a[i][i] += suma;
+    }
+
     //Aseguramos que a matriz sea diagonal dominante
     for(int i = 0; i < N; i++)
     {
