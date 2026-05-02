@@ -1,0 +1,178 @@
+v4.c: En la función \u2018main\u2019:
+v4.c:70:21: aviso: el retorno de vector AVX sin AVX activado cambia la ABI [-Wpsabi]
+   70 |             __m256d vTemp = _mm256_setzero_pd(); //Seteamos registro de guardado temporal de sumas a 0
+      |                     ^~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:1222:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_setzero_pd\u2019: target specific option mismatch
+ 1222 | _mm256_setzero_pd (void)
+      | ^~~~~~~~~~~~~~~~~
+v4.c:70:29: nota: llamado desde aquí
+   70 |             __m256d vTemp = _mm256_setzero_pd(); //Seteamos registro de guardado temporal de sumas a 0
+      |                             ^~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:141:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_add_pd\u2019: target specific option mismatch
+  141 | _mm256_add_pd (__m256d __A, __m256d __B)
+      | ^~~~~~~~~~~~~
+v4.c:110:25: nota: llamado desde aquí
+  110 |                 vTemp = _mm256_add_pd(vTemp, _mm256_mul_pd(vA, vX));
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:312:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_mul_pd\u2019: target specific option mismatch
+  312 | _mm256_mul_pd (__m256d __A, __m256d __B)
+      | ^~~~~~~~~~~~~
+v4.c:110:25: nota: llamado desde aquí
+  110 |                 vTemp = _mm256_add_pd(vTemp, _mm256_mul_pd(vA, vX));
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:860:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_load_pd\u2019: target specific option mismatch
+  860 | _mm256_load_pd (double const *__P)
+      | ^~~~~~~~~~~~~~
+v4.c:108:22: nota: llamado desde aquí
+  108 |                 vX = _mm256_load_pd(x + j + coef);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:860:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_load_pd\u2019: target specific option mismatch
+  860 | _mm256_load_pd (double const *__P)
+      | ^~~~~~~~~~~~~~
+v4.c:107:22: nota: llamado desde aquí
+  107 |                 vA = _mm256_load_pd(a + (i * nFila + j + coef));
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:141:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_add_pd\u2019: target specific option mismatch
+  141 | _mm256_add_pd (__m256d __A, __m256d __B)
+      | ^~~~~~~~~~~~~
+v4.c:103:25: nota: llamado desde aquí
+  103 |                 vTemp = _mm256_add_pd(vTemp, _mm256_mul_pd(vA, vX));
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:312:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_mul_pd\u2019: target specific option mismatch
+  312 | _mm256_mul_pd (__m256d __A, __m256d __B)
+      | ^~~~~~~~~~~~~
+v4.c:103:25: nota: llamado desde aquí
+  103 |                 vTemp = _mm256_add_pd(vTemp, _mm256_mul_pd(vA, vX));
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:860:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_load_pd\u2019: target specific option mismatch
+  860 | _mm256_load_pd (double const *__P)
+      | ^~~~~~~~~~~~~~
+v4.c:101:22: nota: llamado desde aquí
+  101 |                 vX = _mm256_load_pd(x + j + coef);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:860:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_load_pd\u2019: target specific option mismatch
+  860 | _mm256_load_pd (double const *__P)
+      | ^~~~~~~~~~~~~~
+v4.c:100:22: nota: llamado desde aquí
+  100 |                 vA = _mm256_load_pd(a + (i * nFila + j + coef));
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:141:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_add_pd\u2019: target specific option mismatch
+  141 | _mm256_add_pd (__m256d __A, __m256d __B)
+      | ^~~~~~~~~~~~~
+v4.c:96:25: nota: llamado desde aquí
+   96 |                 vTemp = _mm256_add_pd(vTemp, _mm256_mul_pd(vA, vX));
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:312:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_mul_pd\u2019: target specific option mismatch
+  312 | _mm256_mul_pd (__m256d __A, __m256d __B)
+      | ^~~~~~~~~~~~~
+v4.c:96:25: nota: llamado desde aquí
+   96 |                 vTemp = _mm256_add_pd(vTemp, _mm256_mul_pd(vA, vX));
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:860:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_load_pd\u2019: target specific option mismatch
+  860 | _mm256_load_pd (double const *__P)
+      | ^~~~~~~~~~~~~~
+v4.c:94:22: nota: llamado desde aquí
+   94 |                 vX = _mm256_load_pd(x + j + coef);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:860:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_load_pd\u2019: target specific option mismatch
+  860 | _mm256_load_pd (double const *__P)
+      | ^~~~~~~~~~~~~~
+v4.c:93:22: nota: llamado desde aquí
+   93 |                 vA = _mm256_load_pd(a + (i * nFila + j + coef));
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:141:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_add_pd\u2019: target specific option mismatch
+  141 | _mm256_add_pd (__m256d __A, __m256d __B)
+      | ^~~~~~~~~~~~~
+v4.c:89:25: nota: llamado desde aquí
+   89 |                 vTemp = _mm256_add_pd(vTemp, _mm256_mul_pd(vA, vX));
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:312:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_mul_pd\u2019: target specific option mismatch
+  312 | _mm256_mul_pd (__m256d __A, __m256d __B)
+      | ^~~~~~~~~~~~~
+v4.c:89:25: nota: llamado desde aquí
+   89 |                 vTemp = _mm256_add_pd(vTemp, _mm256_mul_pd(vA, vX));
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:860:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_load_pd\u2019: target specific option mismatch
+  860 | _mm256_load_pd (double const *__P)
+      | ^~~~~~~~~~~~~~
+v4.c:86:22: nota: llamado desde aquí
+   86 |                 vX = _mm256_load_pd(x + j); //Guardamos 4 posiciones de x en registro vectorial
+      |                      ^~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:860:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_load_pd\u2019: target specific option mismatch
+  860 | _mm256_load_pd (double const *__P)
+      | ^~~~~~~~~~~~~~
+v4.c:85:22: nota: llamado desde aquí
+   85 |                 vA = _mm256_load_pd(a + (i * nFila + j)); //Guardamos 4 posiciones de a en registro vectorial
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+En el fichero incluido desde /mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/immintrin.h:51,
+                 desde v4.c:6:
+/mnt/netapp1/Optcesga_FT2_RHEL7/2020/gentoo/22072020/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/include/avxintrin.h:866:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm256_store_pd\u2019: target specific option mismatch
+  866 | _mm256_store_pd (double *__P, __m256d __A)
+      | ^~~~~~~~~~~~~~~
+v4.c:124:13: nota: llamado desde aquí
+  124 |             _mm256_store_pd(tmp, vTemp); //Guardamos valores de vTemp en tmp
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
+/var/spool/slurmd/job6779584/slurm_script: línea 21: ./v4: No such file or directory
