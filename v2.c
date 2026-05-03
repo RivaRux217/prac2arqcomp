@@ -82,15 +82,6 @@ int main(int argc, char** argv)
         }
     }
 
-    // Aseguramos que la matriz sea diagonal dominante (Esto ya lo tenías bien)
-    for(int i = 0; i < N; i++)
-    {
-        if(opt[MENOS_INST])
-            a_optm[i * N + i] += suma;
-        else
-            a[i][i] += suma;
-    }
-
     //Aseguramos que a matriz sea diagonal dominante
     for(int i = 0; i < N; i++)
     {
