@@ -17,13 +17,9 @@ double aleatorio()
 
 int main(int argc, char** argv)
 {
-    if(argc < 2)
-    {
-        perror("Insuficientes argumentos de entrada\n");
-        exit(EXIT_FAILURE);
-    }
 
-    const int N = atoi(argv[1]);
+    const int N = (argc >= 2) ? atoi(argv[1]) : 1250;
+    printf("Iniciando con N = %d\n\n", N);
 
     srand(N); //Fijamos semilla de aleatoriedad
 

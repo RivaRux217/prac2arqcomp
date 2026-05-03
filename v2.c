@@ -28,13 +28,12 @@ double aleatorio()
 
 int main(int argc, char** argv)
 {
-    if(argc < 2)
-    {
-        perror("Insuficientes argumentos de entrada\n");
-        exit(EXIT_FAILURE);
-    }
+    char* modo[] = {
+        "Inactivo",
+        "Activo"
+    };
 
-    const int N = atoi(argv[1]);
+    const int N = (argc >= 2) ? atoi(argv[1]) : 1250;
     const double suma = 6000 * N;
 
     srand(N); //Fijamos semilla de aleatoriedad
@@ -46,10 +45,27 @@ int main(int argc, char** argv)
     double* x_new = (double*) aligned_alloc(CLS, N * sizeof(double)); //Nova solución
     double norm2;//norma del vector al cuadrado
 
-    opt[MENOS_INST]   = (argc > 2) ? atoi(argv[2]) : 0;
-    opt[DIV_LAZOS]    = (argc > 3) ? atoi(argv[3]) : 0;
-    opt[DES_LAZOS]    = (argc > 4) ? atoi(argv[4]) : 0;
-    opt[OPER_BLOQUES] = (argc > 5) ? atoi(argv[5]) : 0;
+    if(argc <= 2)
+    {
+        opt[MENOS_INST] = 1;
+        opt[DIV_LAZOS] = 0;
+        opt[DES_LAZOS] = 1;
+        opt[OPER_BLOQUES] = 0;
+    }
+    else
+    {
+        opt[MENOS_INST]   = (argc > 2) ? atoi(argv[2]) : 0;
+        opt[DIV_LAZOS]    = (argc > 3) ? atoi(argv[3]) : 0;
+        opt[DES_LAZOS]    = (argc > 4) ? atoi(argv[4]) : 0;
+        opt[OPER_BLOQUES] = (argc > 5) ? atoi(argv[5]) : 0;
+    }
+    
+    for(int i = 0; i < 4; i++)
+    {
+        if(opt[i] > 1) opt[i] = 1;
+    }
+
+    printf("Iniciando con:\n\tN = %d\n\tRed. instrucciones: %s\n\tDiv. lazos: %s\n\tDes. lazos: %s\n\tOper. bloques: %s\n\n", N, modo[opt[0]], modo[opt[1]], modo[opt[2]], modo[opt[3]]);
 
     //Reservamos memoria para as filas da matriz
     if(opt[MENOS_INST])

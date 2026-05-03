@@ -42,9 +42,20 @@ int main(int argc, char** argv)
      *         >1: usa atomic
      */
     const int N    = (argc >= 2) ? atoi(argv[1]) : 1250;
-    const int TH   = (argc >= 3) ? atoi(argv[2]) : 1;
-    const int SC   = (argc >= 4) ? atoi(argv[3]) : 0;
-    const int CRIT = (argc >= 5) ? atoi(argv[4]) : 0; //Por defecto usamos reduction
+    int TH, SC, CRIT;
+
+    if(argc <= 2)
+    {
+        TH = 32;
+        SC = 2;
+        CRIT = 0;
+    }
+    else
+    {
+        TH   = (argc >= 3) ? atoi(argv[2]) : 1;
+        SC   = (argc >= 4) ? atoi(argv[3]) : 0;
+        CRIT = (argc >= 5) ? atoi(argv[4]) : 0; //Por defecto usamos reduction
+    }
 
     int critIx = (CRIT == 0) ? 0 : ((CRIT == 1) ? 1 : 2);
 
